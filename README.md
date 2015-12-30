@@ -72,7 +72,7 @@ pip install phonenumbers
 
 ### Setup variables
 Replace the Python variables with your app id and access token:
-```
+```python
 appId = "APP ID HERE"
 accessToken = "ACCESS TOKEN HERE"
 ```
