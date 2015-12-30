@@ -1,49 +1,23 @@
 /*
  * Part of mcwebb/angular-cognalys
- * Coypyright 2015 Matthew Webb <matthewowebb@gmail.com>
+ * Modified to work with custom Python Flask API endpoint by: Omar Quazi
+ * Copyright 2015 Matthew Webb <matthewowebb@gmail.com>
+ * Copyright 2015 Omar Quazi <omarquaz@gmail.com>
  * MIT License
  */
-angular.module('mcwebb.cognalys', [])
+angular.module('py.cognalys', [])
 .provider('Cognalys', function () {
-	var apiEndpoint = 'https://www.cognalys.com/api/v1/';
-
-	var credentials = {
-		appId: '',
-		accessToken: ''
-	};
-
-	var getUrl = function (method, params) {
-		var sParams = '',
-			base = apiEndpoint +
-				method +
-				'/?app_id=' +
-				credentials.appId +
-				'&access_token=' +
-				credentials.accessToken;
-
-		for (var name in params) {
-			sParams += '&' +
-				name +
-				'=' +
-				params[name];
-		}
-		return base + sParams;
-	};
-
-	this.setCredentials = function (o) {
-		credentials.appId = o.appId;
-		credentials.accessToken = o.accessToken;
-	};
+	var apiEndpoint = 'http://localhost:5000';
 
 	this.$get = function ($http, $q) {
 		var cache = [];
 		return {
 			verifyMobileNumber: function (cc, number) {
+				cache = [];
 				var q = $q.defer();
-				$http.get(getUrl('otp', {
-					mobile: cc + number
-				}))
+				$http.get(apiEndpoint+"/verify/placeCall/"+(cc+number))
 				.success(function (data) {
+					data = JSON.parse(data.result);
 					if (data.status == 'success') {
 						cache.push(data);
 						q.resolve(data);
@@ -55,6 +29,7 @@ angular.module('mcwebb.cognalys', [])
 						});
 					}
 				})
+
 				.error(function () {
 					q.reject({
 						500: 'An unknown error occured'
@@ -62,13 +37,12 @@ angular.module('mcwebb.cognalys', [])
 				});
 				return q.promise;
 			},
-			confirmVerification: function (otp_end) {
+			confirmVerification: function (otp_end, pubKey, number) {
 				var q = $q.defer(),
 					latest = cache.pop();
-				$http.get(getUrl('otp/confirm', {
-					keymatch: latest.keymatch,
-					otp: latest.otp_start + otp_end
-				})).success(function (data) {
+				$http.get(apiEndpoint+"/verify/verifyCall/"+latest.keymatch+"/"+(latest.otp_start+otp_end))
+				.success(function (data) {
+					data = JSON.parse(data.result);
 					if (data.status == 'success') {
 						cache.push(data);
 						q.resolve(data);

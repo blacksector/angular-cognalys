@@ -1,9 +1,12 @@
 {
-  "name": "angular-cognalys",
-  "description": "An Angular wrapper for the Cognalys REST API",
+  "name": "angular-cognalys-python",
+  "description": "An Angular wrapper for the Cognalys REST API - Custom made Python Flask server",
   "main": "./angular-cognalys.js",
   "ignore": [],
-  "author": "Matthew Webb",
+  "authors": [
+   "Matthew Webb",
+   "Omar Quazi"
+ ],
   "licenses": [
     {
       "type": "MIT",
