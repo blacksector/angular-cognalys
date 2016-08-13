@@ -22,8 +22,13 @@ var apiEndpoint = 'http://localhost:5000';
 ## Example Use
 ### Try Number
 ```js
-angular.module('xxxx')
-.controller('SignupController', function SignupController($scope, Cognalys) {
+angular
+    .module('xxxx')
+    .controller('SignupController', SignupController);
+
+SignupController.$inject = ['$scope'];
+
+function SignupController($scope, Cognalys) {
 	$scope.submit = function () {
 		Cognalys.verifyMobileNumber($scope.countryCode, $scope.phoneNumber)
 		.then(function (response) {
@@ -36,12 +41,17 @@ angular.module('xxxx')
 			}
 		});
 	};
-});
+}
 ```
 ### Verify User's Verification
 ```js
-angular.module('xxxx')
-.controller('SignupController', function SignupController($scope, Cognalys) {
+angular
+    .module('xxxx')
+    .controller('SignupController', SignupController);
+
+SignupController.$inject = ['$scope'];
+
+function SignupController($scope, Cognalys) {
 	$scope.verify = function () {
 		Cognalys.confirmVerification($scope.verificationCode)
 		.then(function (response) {
@@ -55,7 +65,7 @@ angular.module('xxxx')
 			}
 		});
 	};
-});
+}
 ```
 
 ## Installation - Server (Python Flask)
