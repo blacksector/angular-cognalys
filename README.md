@@ -86,3 +86,6 @@ Replace the Python variables with your app id and access token:
 appId = "APP ID HERE"
 accessToken = "ACCESS TOKEN HERE"
 ```
+
+### Changelogs
+August 12 2016 - Removed duplicate code like success & error callbacks & centralized the common code(re-usability) that way more options can be added to it. This PR doesn't have any functional changes though, it's just the refactoring to make it more readable. Thanks [@Mohammed9531](https://github.com/Mohammed9531)
